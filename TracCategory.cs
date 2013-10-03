@@ -7,7 +7,7 @@ namespace Inedo.BuildMasterExtensions.Trac
     /// Category for the Trac issue tracker.
     /// </summary>
     [Serializable]
-    public sealed class TracCategory : CategoryBase
+    public sealed class TracCategory : IssueTrackerCategory
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TracCategory"/> class.

@@ -7,7 +7,7 @@ namespace Inedo.BuildMasterExtensions.Trac
     /// An issue in the Trac issue tracking system.
     /// </summary>
     [Serializable]
-    public sealed class TracIssue : Issue
+    public sealed class TracIssue : IssueTrackerIssue
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TracIssue"/> class.

@@ -110,7 +110,7 @@ namespace Inedo.BuildMasterExtensions.Trac
         /// <returns>
         /// The URL of the specified issue if applicable; otherwise null.
         /// </returns>
-        public override string GetIssueUrl(Issue issue)
+        public override string GetIssueUrl(IssueTrackerIssue issue)
         {
             if (issue == null)
                 throw new ArgumentNullException("issue");
@@ -129,7 +129,7 @@ namespace Inedo.BuildMasterExtensions.Trac
         /// <returns>
         /// Array of issues for the specified release.
         /// </returns>
-        public override Issue[] GetIssues(string releaseNumber)
+        public override IssueTrackerIssue[] GetIssues(string releaseNumber)
         {
             var queries = new List<string>();
 
@@ -160,7 +160,7 @@ namespace Inedo.BuildMasterExtensions.Trac
         /// <returns>
         /// True if issue is closed; otherwise false.
         /// </returns>
-        public override bool IsIssueClosed(Issue issue)
+        public override bool IsIssueClosed(IssueTrackerIssue issue)
         {
             if (issue == null)
                 throw new ArgumentNullException("issue");
@@ -185,7 +185,7 @@ namespace Inedo.BuildMasterExtensions.Trac
         /// The nesting level (i.e. <see cref="CategoryBase.SubCategories"/>) can never be less than
         /// the length of <see cref="CategoryTypeNames"/>.
         /// </remarks>
-        public CategoryBase[] GetCategories()
+        public IssueTrackerCategory[] GetCategories()
         {
             var categories = new List<TracCategory>();
             var typeNames = (object[])this.Rpc.Invoke("ticket.type.getAll");
