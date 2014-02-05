@@ -14,6 +14,8 @@ namespace Inedo.BuildMasterExtensions.Trac
         private ValidatingTextBox txtUrl;
         private TextBox txtUser;
         private PasswordTextBox txtPassword;
+        private TextBox txtSubProject;
+        private CheckBox chkbxUsesMilestones;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TracIssueTrackingProviderEditor"/> class.
@@ -28,6 +30,8 @@ namespace Inedo.BuildMasterExtensions.Trac
             this.txtUrl.Text = provider.RpcUrl ?? string.Empty;
             this.txtUser.Text = provider.UserName ?? string.Empty;
             this.txtPassword.Text = provider.Password ?? string.Empty;
+            this.txtSubProject.Text = provider.SubProject ?? string.Empty;
+            this.chkbxUsesMilestones.Checked = provider.UsesMilestoneToObtainIssues;
         }
         public override ProviderBase CreateFromForm()
         {
@@ -35,7 +39,9 @@ namespace Inedo.BuildMasterExtensions.Trac
             {
                 RpcUrl = this.txtUrl.Text,
                 UserName = this.txtUser.Text,
-                Password = this.txtPassword.Text
+                Password = this.txtPassword.Text,
+                SubProject = this.txtSubProject.Text,
+                UsesMilestoneToObtainIssues = this.chkbxUsesMilestones.Checked
             };
         }
 
@@ -63,6 +69,12 @@ namespace Inedo.BuildMasterExtensions.Trac
                 Width = 270
             };
 
+            this.txtSubProject = new TextBox() {
+                Width = 300
+            };
+
+            this.chkbxUsesMilestones = new CheckBox();
+
             CUtil.Add(this,
                 new FormFieldGroup(
                     "Trac Project URL",
@@ -76,6 +88,13 @@ namespace Inedo.BuildMasterExtensions.Trac
                     false,
                     new StandardFormField("User Name:", this.txtUser),
                     new StandardFormField("Password:", this.txtPassword)
+                ),
+                new FormFieldGroup(
+                    "Multi-project",
+                    "Advanced settings used when using multi-project Trac environment. For single-project environments, leave default values.",
+                    false,
+                    new StandardFormField("Sub-project name:", this.txtSubProject),
+                    new StandardFormField("Uses milestones to obtain issues:", this.chkbxUsesMilestones)
                 )
             );
         }

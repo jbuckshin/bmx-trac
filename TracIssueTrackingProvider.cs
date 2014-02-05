@@ -76,6 +76,16 @@ namespace Inedo.BuildMasterExtensions.Trac
         /// </summary>
         [Persistent]
         public string Password { get; set; }
+        /// <summary>
+        /// Gets or sets sub-project name in multi-project trac environment
+        /// </summary>
+        [Persistent]
+        public string SubProject { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether provider should use milestones to obtain issues
+        /// </summary>
+        [Persistent]
+        public bool UsesMilestoneToObtainIssues { get; set; }
 
         /// <summary>
         /// Gets the XML-RPC proxy object.
@@ -132,9 +142,9 @@ namespace Inedo.BuildMasterExtensions.Trac
         public override IssueTrackerIssue[] GetIssues(string releaseNumber)
         {
             var queries = new List<string>();
-
-            if (!string.IsNullOrEmpty(releaseNumber))
-                queries.Add("version=" + releaseNumber);
+            string filterQuery = this.GetIssueFilterQuery( releaseNumber );
+            if ( !string.IsNullOrEmpty( filterQuery ) )
+                queries.Add( filterQuery );
 
             if (this.CategoryIdFilter != null && this.CategoryIdFilter.Length > 0 && !string.IsNullOrEmpty(this.CategoryIdFilter[0]))
                 queries.Add("type=" + this.CategoryIdFilter[0]);
@@ -153,6 +163,7 @@ namespace Inedo.BuildMasterExtensions.Trac
 
             return issues.ToArray();
         }
+
         /// <summary>
         /// Returns a value indicating if the specified issue is closed.
         /// </summary>
@@ -271,6 +282,23 @@ namespace Inedo.BuildMasterExtensions.Trac
                 return (value ?? string.Empty).ToString();
             else
                 return string.Empty;
+        }
+
+        /// <summary>
+        /// Returns a query that obtains issues by version or milestone
+        /// </summary>
+        /// <param name="releaseNumber">Release number of issues to return.</param>
+        /// <returns>Query that can be used to obtain list of issues from trac environment</returns>
+        private string GetIssueFilterQuery( string releaseNumber ) {
+            string query = string.Empty;
+            if ( !string.IsNullOrWhiteSpace( releaseNumber ) ) {
+                if ( !this.UsesMilestoneToObtainIssues )
+                    query = "version=" + releaseNumber;
+                else if ( !string.IsNullOrWhiteSpace( this.SubProject ) )
+                    query = string.Format( "milestone={0}+{1}",
+                        this.SubProject, releaseNumber );
+            }
+            return query;
         }
     }
 }
