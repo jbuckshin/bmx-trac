@@ -295,7 +295,7 @@ namespace Inedo.BuildMasterExtensions.Trac
                 if ( !this.UsesMilestoneToObtainIssues )
                     query = "version=" + releaseNumber;
                 else if ( !string.IsNullOrWhiteSpace( this.SubProject ) )
-                    query = string.Format( "milestone={0}+{1}",
+                    query = string.Format( "milestone={0} {1}",
                         this.SubProject, releaseNumber );
             }
             return query;
