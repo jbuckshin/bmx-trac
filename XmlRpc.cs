@@ -46,7 +46,7 @@ namespace Inedo.BuildMasterExtensions.Trac
         public object Invoke(string methodName, params object[] args)
         {
             var buffer = new MemoryStream();
-            var request = HttpWebRequest.Create(this.uri);
+            var request = WebRequest.Create(this.uri);
             request.ContentType = "text/xml; charset=\"utf-8\"";
             request.Method = "POST";
             if (!string.IsNullOrEmpty(this.authenticationToken))
