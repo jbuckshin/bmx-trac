@@ -20,9 +20,10 @@ namespace Inedo.BuildMasterExtensions.Trac
             this.txtUrl.Text = provider.RpcUrl;
             this.txtUser.Text = provider.UserName;
             this.txtPassword.Text = provider.Password;
-            this.txtSubProject.Text = provider.SubProject;
             this.chkUsesMilestones.Checked = provider.UsesMilestoneToObtainIssues;
+            this.txtSubProject.Text = provider.SubProject;
         }
+
         public override ProviderBase CreateFromForm()
         {
             return new TracIssueTrackingProvider
@@ -30,8 +31,9 @@ namespace Inedo.BuildMasterExtensions.Trac
                 RpcUrl = this.txtUrl.Text,
                 UserName = this.txtUser.Text,
                 Password = this.txtPassword.Text,
-                SubProject = this.txtSubProject.Text,
-                UsesMilestoneToObtainIssues = this.chkUsesMilestones.Checked
+                UsesMilestoneToObtainIssues = this.chkUsesMilestones.Checked,
+                SubProject = this.txtSubProject.Text
+                
             };
         }
 
@@ -54,7 +56,8 @@ namespace Inedo.BuildMasterExtensions.Trac
                 },
                 new SlimFormField("User name:", this.txtUser),
                 new SlimFormField("Password:", this.txtPassword),
-                new SlimFormField("Subproject name:", new Div(this.txtSubProject), new Div(this.chkUsesMilestones))
+                new SlimFormField("Use Milestones (Buildmaster release number = Trac Milestone)", new Div(this.chkUsesMilestones)),
+                new SlimFormField("Subproject name (Used only when 'Use Milestones' checked):", new Div(this.txtSubProject))
             );
         }
     }

@@ -5,6 +5,7 @@ using Inedo.BuildMaster.Extensibility.Providers;
 using Inedo.BuildMaster.Extensibility.Providers.IssueTracking;
 using Inedo.BuildMaster.Web;
 using Inedo.Serialization;
+using Inedo.BuildMaster.Extensibility;
 
 namespace Inedo.BuildMasterExtensions.Trac
 {
@@ -57,6 +58,7 @@ namespace Inedo.BuildMasterExtensions.Trac
 
         public override string GetIssueUrl(IssueTrackerIssue issue)
         {
+            
             if (issue == null)
                 throw new ArgumentNullException("issue");
 
@@ -168,14 +170,21 @@ namespace Inedo.BuildMasterExtensions.Trac
         }
 
         private string GetIssueFilterQuery( string releaseNumber ) {
+
             string query = string.Empty;
+
             if ( !string.IsNullOrWhiteSpace( releaseNumber ) ) {
                 if ( !this.UsesMilestoneToObtainIssues )
                     query = "version=" + releaseNumber;
                 else if ( !string.IsNullOrWhiteSpace( this.SubProject ) )
                     query = string.Format( "milestone={0} {1}",
                         this.SubProject, releaseNumber );
+                else
+                {
+                    query = "milestone=" + releaseNumber;
+                }
             }
+
             return query;
         }
     }

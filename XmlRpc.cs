@@ -84,6 +84,7 @@ namespace Inedo.BuildMasterExtensions.Trac
             request.ContentLength = buffer.Length;
             var requestStream = request.GetRequestStream();
             requestStream.Write(buffer.ToArray(), 0, (int)buffer.Length);
+            requestStream.Close();  // ?? jbuckshin - 2016.10.4
 
             var response = request.GetResponse();
             var doc = new XmlDocument();
